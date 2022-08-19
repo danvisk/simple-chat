@@ -12,6 +12,9 @@ var Message = mongoose.model('Message', {
 })
 
 router.get('/', (req, res) => {
+    // let botMsg = await Message.findOne({name: 'Bot'})
+    // if(botMsg)
+    //     await Message.deleteOne({_id: botMsg.id})
     Message.find({}, (err, messages) =>{
         res.send(messages)
     })
@@ -20,8 +23,10 @@ router.get('/', (req, res) => {
 router.delete('/', async (req, res) => {
     console.log('delete was called')
     if(await Message.countDocuments({})) {
-        await Message.collection.drop()
         io.emit('delete')
+        let msg = { name: 'Bot', message: 'Someone requested to delete the chat history'}
+        io.emit('message', msg)
+        await Message.collection.drop()
         res.sendStatus(200)
     }    
     else {
@@ -37,7 +42,7 @@ router.post('/', async (req, res) => {
 
         await message.save(); //let savedMessage = a
 
-        let censored = await Message.findOne({message: 'badword'});
+        let censored = await Message.findOne({message: 'badword'})
 
         if(censored) {
             console.log('badword detected. Nothing saved')
