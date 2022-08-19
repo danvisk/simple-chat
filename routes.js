@@ -38,21 +38,14 @@ router.delete('/', async (req, res) => {
 router.post('/', async (req, res) => {
     
     try {
-        let message = new Message(req.body)
-
-        await message.save(); //let savedMessage = a
-
-        let censored = await Message.findOne({message: 'badword'})
-
-        if(censored) {
+        if(req.body.message === 'badword')
             console.log('badword detected. Nothing saved')
-            await Message.deleteOne({_id: censored.id})
-        }    
         else {
-            console.log('message saved')
             io.emit('message', req.body)
-        }    
-
+            let message = new Message(req.body)
+            await message.save(); //let savedMessage = a
+            console.log('message saved')
+        }
         res.sendStatus(200)
     
     } catch (err) {
