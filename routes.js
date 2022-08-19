@@ -12,9 +12,6 @@ var Message = mongoose.model('Message', {
 })
 
 router.get('/', (req, res) => {
-    // let botMsg = await Message.findOne({name: 'Bot'})
-    // if(botMsg)
-    //     await Message.deleteOne({_id: botMsg.id})
     Message.find({}, (err, messages) =>{
         res.send(messages)
     })
