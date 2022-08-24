@@ -12,9 +12,6 @@ var Message = mongoose.model('Message', {
 })
 
 router.get('/', (req, res) => {
-    // let botMsg = await Message.findOne({name: 'Bot'})
-    // if(botMsg)
-    //     await Message.deleteOne({_id: botMsg.id})
     Message.find({}, (err, messages) =>{
         res.send(messages)
     })
@@ -26,7 +23,7 @@ router.delete('/', async (req, res) => {
         io.emit('delete')
         let msg = { name: 'Bot', message: 'Someone requested to delete the chat history'}
         io.emit('message', msg)
-        await Message.collection.drop()
+        await Message.deleteMany()
         res.sendStatus(200)
     }    
     else {

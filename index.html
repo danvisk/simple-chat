@@ -18,14 +18,14 @@
             <textarea id="message" class="form-control" placeholder="Message"></textarea>
             <br>
             <button id="send" class="btn btn-success">Send</button>
-            <button type="button" id="send2" class="btn btn-danger">Reset</button>
+            <button type="button" id="reset" class="btn btn-danger">Reset</button>
         </div>
         <div id="messages">
 
         </div>
     </div>
     <style>
-        #send2 {
+        #reset {
             float: right;
         }
     </style>
@@ -35,9 +35,11 @@
             getMessages()
             $("#send").click(()=>{
                 var message = { name: $("#name").val(), message: $("#message").val()}
+                $("#message").val("")
                 postMessage(message)
             })
-            $("#send2").click(()=>{
+            $("#reset").click(()=>{
+                $("#message").val("")
                 deleteRequest()
             })
         })
@@ -47,10 +49,6 @@
 
         function addMessage(message){
             $("#messages").append(`<h4> ${message.name} </h4> <p> ${message.message} </p>`)
-        }
-        
-        function removeMessages(){
-            $("#messages").setHTML('')
         }
 
         function getMessages() {
